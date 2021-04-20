@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Testing</title>
+    <script src="/index.js"></script>
+    <script src="/index.test.js"></script>
+
+    <style>
+      body { background: black; color: white; }
+      .msg { font-size: 16px; font-family: monospace; }
+      .red { color: red; }
+      .green { color: green; }
+    </style>
+  </head>
+
+  <body>
+    <div id="app">
+      <p data-bind="username:innerText"></p>
+      <textarea data-bind="bio:value:input"></textarea>
+      <p data-bind="bio:innerText">
+    </div>
+  </body>
+</html>
