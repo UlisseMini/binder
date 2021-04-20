@@ -35,4 +35,4 @@ Everything is populated to the elements.
 - [ ] Support async/await in `sync()`. make everything async? I don't see a big downside.
 - [ ] Support nested data
 - [ ] Support arrays
-- [ ] Add tests
+- [x] ~~Add tests~~ too much work, puppeteer is a pain for this usecase.
