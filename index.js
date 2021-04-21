@@ -1,4 +1,5 @@
-
+// A single Binding, like username or bio.
+// Can have many things bound (like elements).
 class Binding {
   constructor() {
     this.value = null
@@ -20,24 +21,20 @@ class Binding {
   delHook(ref) {this.hooks.delete(ref)}
 
   bindElement(el, attr, event) {
-    const hook = (v) => {
-      if (el[attr] != v) {el[attr] = v}
-    }
-    this.addHook(hook, el)
+    this.addHook((v) => el[attr] = v, el)
 
     if (event) {
-      el.addEventListener(event, () => {this.set(el[attr], el)})
+      el.addEventListener(event, () => this.set(el[attr], el))
     }
   }
 }
 
-// Terms:
-//  - Binding: A single binding, such as a username. shared between many elements
-//  - Binder: A wrapper around many bindings, able to construct from the DOM.
-//  - Bound: The internal (name -> getter/setter) object used by Binder
+// Binder is basically a map of name -> Binding for many bindings, it can
+// create itself from the DOM where data-bind="name:attr:event", for example
+// <textarea data-bind="bio:value:input"></textarea>
 class Binder {
   constructor(element) {
-    this.bound = {}
+    this.bound = {} // name -> Binding
     if (element) {
       this.bind(element)
     }
@@ -66,7 +63,8 @@ class Binder {
   set(name, value) {this.bound[name].set(value)}
   get(name) {return this.bound[name].get()}
 
-  // Populate the binder with a data object
+  // Populate the binder with a data object, for example
+  // binder.populate({name: "foo", bio: "bar"})
   populate(data) {
     Object.keys(data).forEach(name => {
       if (this.bound[name]) {
@@ -75,7 +73,8 @@ class Binder {
     })
   }
 
-  // Return a static copy of the bound data in object form
+  // Return a static copy of the bound data in object form, for example
+  // binder.copy() => {name: "foo", bio: "bar"}
   copy() {
     const data = {}
     Object.keys(this.bound).forEach(name => {
