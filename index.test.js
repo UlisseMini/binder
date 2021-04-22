@@ -13,8 +13,16 @@ function $b(name) {
 }
 function $b0(name) {return $b(name)}
 
+function _eq(a, b) {
+  if (typeof a == 'object' && typeof b == 'object') {
+    return JSON.stringify(a) == JSON.stringify(b)
+  } else {
+    return a === b
+  }
+}
+
 function eq(a, b) {
-  return {result: a === b, left: a, right: b, op: '==='}
+  return {result: _eq(a, b), left: a, right: b, op: '==='}
 }
 
 function eqa(as, b) {
@@ -77,6 +85,17 @@ const tests = [
 
       assert(eqa($b("bio"), el.value))
       assert(eq(binder.get("bio"), el.value))
+    },
+  },
+  {
+    name: "Populate and Copy",
+    test: async (binder) => {
+      const obj = {username: "foo", bio: "bar"}
+      binder.populate(obj)
+
+      assert(eqa($b("bio"), "bar"))
+      assert(eqa($b("username"), "foo"))
+      assert(eq(binder.copy(), obj))
     },
   },
 ]
