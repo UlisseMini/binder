@@ -54,10 +54,6 @@ function assert(a, b) {
   if (typeof s == 'string') {throw s}
 }
 
-async function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms))
-}
-
 const tests = [
   {
     name: 'Bio object change',
